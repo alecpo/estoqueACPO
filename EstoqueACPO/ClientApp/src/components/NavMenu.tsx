@@ -1,42 +1,39 @@
-import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Container, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem } from 'reactstrap';
 import './NavMenu.css';
 
-export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
-    public state = {
-        isOpen: false
-    };
+const NavMenu = () => {
+  const [isOpen, setOpen] = useState(false);
 
-    public render() {
-        return (
-            <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                    <Container>
-                        <NavbarBrand tag={Link} to="/">EstoqueACPO</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2"/>
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-            </header>
-        );
-    }
+  const toggle = () => setOpen(!isOpen);
 
-    private toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
-}
+  return (
+    <header>
+      <Navbar className='navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3' light>
+        <Container>
+          <NavbarBrand to='/' href='/'>
+            EstoqueACPO
+          </NavbarBrand>
+          <NavbarToggler onClick={toggle} className='mr-2' />
+          <Collapse className='d-sm-inline-flex flex-sm-row-reverse' isOpen={isOpen} navbar>
+            <ul className='navbar-nav flex-grow'>
+              <NavItem>
+                <NavLink className='text-dark nav-link' to='/' href='/'>
+                  Home
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink className='text-dark nav-link' to='/NovoProduto' href='/NovoProduto'>
+                  Cadastrar Produto
+                </NavLink>
+              </NavItem>
+            </ul>
+          </Collapse>
+        </Container>
+      </Navbar>
+    </header>
+  );
+};
+
+export default NavMenu;
