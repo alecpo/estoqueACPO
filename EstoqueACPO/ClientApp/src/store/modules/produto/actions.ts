@@ -22,3 +22,10 @@ export const createProdutoSuccess = (produto: IProduto) => action(CREATE_PRODUTO
 export const deleteProdutoRequest = (id: number, deleteItemCallback: () => void) =>
   action(DELETE_PRODUTO_REQUEST, { id, deleteItemCallback });
 export const deleteProdutoSuccess = (id: number) => action(DELETE_PRODUTO_SUCCESS, id);
+
+export const updateProdutoRequest = (
+  id: number,
+  produto: IProduto,
+  updateItemCallback: () => void,
+) => action(UPDATE_PRODUTO_REQUEST, { id, produto, updateItemCallback });
+export const updateProdutoSuccess = (produto: IProduto) => action(UPDATE_PRODUTO_SUCCESS, produto);

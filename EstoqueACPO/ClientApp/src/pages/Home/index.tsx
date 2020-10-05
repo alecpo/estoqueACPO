@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Table, Button, Row, Col } from 'reactstrap';
 
-import { deleteProdutoRequest, getProdutosRequest } from '../../store/modules/produto/actions';
+import { deleteProdutoRequest } from '../../store/modules/produto/actions';
 import { RootState } from '../../store/modules/rootReducer';
 import ModalExclusao from '../../components/ModalExclusao';
 import ModalEdicaoProduto from './ModalEdicaoProduto';
@@ -26,6 +26,10 @@ const Home = () => {
     setInitialValuesEdicao({} as IProduto);
     setModalEdicaoOpen(false);
   };
+
+  useEffect(() => {
+    if (Boolean(initialValuesEdicao.id)) setModalEdicaoOpen(true);
+  }, [initialValuesEdicao.id]);
   //#endregion edicao
 
   //#region exclusao
@@ -50,11 +54,6 @@ const Home = () => {
   useEffect(() => {
     if (Boolean(modalExclusaoInfo.idToRemove)) setModalExclusaoOpen(true);
   }, [modalExclusaoInfo.idToRemove]);
-
-  useEffect(() => {
-    if (Boolean(initialValuesEdicao.id)) setModalEdicaoOpen(true);
-  }, [initialValuesEdicao.id]);
-
   //#endregion exclusao
 
   return (
@@ -118,11 +117,8 @@ const Home = () => {
       />
       <ModalEdicaoProduto
         toggle={toggleModalEdicao}
-        cancelLabel='Cancelar'
-        confirmLabel='Atualizar'
         initialValues={initialValuesEdicao}
         closeModal={closeModalEdicao}
-        handleConfirm={() => {}}
         isOpen={isModalEdicaoOpen}
         title='Edição de produto'
       />

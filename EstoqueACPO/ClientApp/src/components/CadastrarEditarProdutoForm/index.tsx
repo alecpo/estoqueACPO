@@ -6,7 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import IProduto from '../../genericInterfaces/IProduto';
 import { useDispatch } from 'react-redux';
-import { createProdutoRequest } from '../../store/modules/produto/actions';
+import { createProdutoRequest, updateProdutoRequest } from '../../store/modules/produto/actions';
 import { useHistory } from 'react-router';
 
 const REQUIRED_FIELD = 'Favor preencher o campo';
@@ -14,6 +14,8 @@ const REQUIRED_FIELD = 'Favor preencher o campo';
 interface IProps {
   isEdicao?: boolean;
   initialValues?: IProduto;
+  handleConfirm?: (produto: IProduto) => void;
+  closeModal?: () => void;
 }
 
 const cadastroSchema = Yup.object().shape({
@@ -22,7 +24,7 @@ const cadastroSchema = Yup.object().shape({
   unidades: Yup.string().required(REQUIRED_FIELD),
 });
 
-const AlterarEditarProdutoForm = ({ isEdicao, initialValues }: IProps) => {
+const AlterarEditarProdutoForm = ({ isEdicao, initialValues, closeModal }: IProps) => {
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -32,7 +34,7 @@ const AlterarEditarProdutoForm = ({ isEdicao, initialValues }: IProps) => {
   };
 
   const atualizarProduto = (produto: IProduto) => {
-    console.log('produto atualizado: ', produto);
+    if (closeModal) dispatch(updateProdutoRequest(produto.id, produto, closeModal));
   };
 
   return (
@@ -43,7 +45,7 @@ const AlterarEditarProdutoForm = ({ isEdicao, initialValues }: IProps) => {
       validateOnBlur={false}
       onSubmit={isEdicao ? atualizarProduto : cadastrarProduto}
     >
-      {({ handleChange, errors, values }) => (
+      {({ handleChange, values }) => (
         <Form translate=''>
           <FormGroup>
             <Label>Nome do produto</Label>
@@ -82,10 +84,19 @@ const AlterarEditarProdutoForm = ({ isEdicao, initialValues }: IProps) => {
             />
           </FormGroup>
 
-          {!isEdicao && (
+          {!isEdicao ? (
             <Button id='btnSubmit' type='submit'>
               Cadastrar Produto
             </Button>
+          ) : (
+            <div className='modal-footer'>
+              <Button color='primary' id='btnSubmit' type='submit'>
+                Atualizar
+              </Button>
+              <Button color='secondary' onClick={closeModal}>
+                Cancelar
+              </Button>
+            </div>
           )}
         </Form>
       )}

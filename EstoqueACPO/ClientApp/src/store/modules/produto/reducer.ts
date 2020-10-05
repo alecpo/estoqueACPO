@@ -3,6 +3,7 @@ import {
   GET_PRODUTOS_SUCCESS,
   CREATE_PRODUTO_SUCCESS,
   DELETE_PRODUTO_SUCCESS,
+  UPDATE_PRODUTO_SUCCESS,
 } from './actionTypes';
 import { IProdutoState, ProdutoAction } from './types';
 
@@ -26,6 +27,15 @@ export default (state = initialState, action: ProdutoAction): IProdutoState => {
       return {
         ...state,
         produtos: [...state.produtos.filter(produto => produto.id !== (action.payload as number))],
+      };
+    case UPDATE_PRODUTO_SUCCESS:
+      return {
+        ...state,
+        produtos: [
+          ...state.produtos.map(produto =>
+            produto.id !== (action.payload as IProduto).id ? produto : (action.payload as IProduto),
+          ),
+        ],
       };
     default:
       return state;

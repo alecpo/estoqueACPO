@@ -3,7 +3,12 @@ import { call, put, all, takeLatest } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
 
 import IProduto from '../../../genericInterfaces/IProduto';
-import { addProduto, deletarProduto, getAllProdutos } from '../../../services/produto';
+import {
+  addProduto,
+  deletarProduto,
+  getAllProdutos,
+  atualizarProduto,
+} from '../../../services/produto';
 import { startAction, stopAction } from '../ui/actions';
 import {
   createProdutoRequest,
@@ -12,11 +17,14 @@ import {
   deleteProdutoSuccess,
   getProdutosRequest,
   getProdutosSuccess,
+  updateProdutoRequest,
+  updateProdutoSuccess,
 } from './actions';
 import {
   CREATE_PRODUTO_REQUEST,
   GET_PRODUTOS_REQUEST,
   DELETE_PRODUTO_REQUEST,
+  UPDATE_PRODUTO_REQUEST,
 } from './actionTypes';
 
 export function* getProdutos({ type }: ActionType<typeof getProdutosRequest>) {
@@ -65,8 +73,26 @@ export function* deleteProduto({ type, payload }: ActionType<typeof deleteProdut
   }
 }
 
+export function* updateProduto({ type, payload }: ActionType<typeof updateProdutoRequest>) {
+  try {
+    const { id, produto, updateItemCallback } = payload;
+    yield put(startAction({ name: type }));
+    const { data, status } = yield call(atualizarProduto, id, produto);
+    const produtoAtualizado: IProduto = data;
+    if (status === 200) {
+      yield put(updateProdutoSuccess(produtoAtualizado));
+      updateItemCallback();
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(stopAction(type));
+  }
+}
+
 export default all([
   takeLatest(GET_PRODUTOS_REQUEST, getProdutos),
   takeLatest(CREATE_PRODUTO_REQUEST, createProduto),
   takeLatest(DELETE_PRODUTO_REQUEST, deleteProduto),
+  takeLatest(UPDATE_PRODUTO_REQUEST, updateProduto),
 ]);
