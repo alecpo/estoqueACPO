@@ -2,6 +2,19 @@
 	
 Esse projeto foi criado visando a aplicação para uma vaga de fullstack na DTI.
 
+Foi feito num modelo monorepo para facilitar a execução do mesmo.
+
+Para executar o projeto, abra a solution no VS19 e clique no ícone verde de play para rodar o build.
+
+Ao finalizar o processo de build, uma nova janela do navegador irá se abrir.
+
+Teste a demo:
+
+- A primeira página serve para ver os produtos listados, alterar ou remover determinado produto.
+- menu superior de navegação, se encontra a aba referente ao cadastro de um novo produto.
+- Ao cadastrar um produto, o site irá direcioná-lo para a pagina inicial, atualizando somente a lista de produtos.
+- Caso informe dados incorretos no momento do cadastro, um número de mensagens equivalente à quantidade de erros aparecerá sobre o formulário de cadastro.
+
 ## Bibliotecas utilizadas: Front
 
 - **axios**: Configurar e realizar requisições HTTP;
