@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Row, Col } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { deleteProdutoRequest } from '../../store/modules/produto/actions';
 import { RootState } from '../../store/modules/rootReducer';
@@ -80,12 +82,12 @@ const Home = () => {
               <td>{produto.unidades}</td>
               <td align='center'>
                 <Row>
-                  <Col xs='4'>
+                  <Col xs='3'>
                     <Button color='info' size='sm' onClick={() => setInitialValuesEdicao(produto)}>
-                      Editar
+                      <FontAwesomeIcon icon={faPencilAlt} />
                     </Button>
                   </Col>
-                  <Col xs='4'>
+                  <Col xs='3'>
                     <Button
                       color='danger'
                       size='sm'
@@ -96,7 +98,7 @@ const Home = () => {
                         } as IDeleteModalInfo)
                       }
                     >
-                      X
+                      <FontAwesomeIcon icon={faTrashAlt} />
                     </Button>
                   </Col>
                 </Row>

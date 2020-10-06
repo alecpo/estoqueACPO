@@ -8,8 +8,10 @@ import IProduto from '../../genericInterfaces/IProduto';
 import { useDispatch } from 'react-redux';
 import { createProdutoRequest, updateProdutoRequest } from '../../store/modules/produto/actions';
 import { useHistory } from 'react-router';
+import StyledMensagemAlerta from '../StyledMensagemAlerta';
 
 const REQUIRED_FIELD = 'Favor preencher o campo';
+const NO_ZERO = 'Valor não pode ser zero';
 
 interface IProps {
   isEdicao?: boolean;
@@ -19,9 +21,12 @@ interface IProps {
 }
 
 const cadastroSchema = Yup.object().shape({
-  nome: Yup.string().required(REQUIRED_FIELD),
-  valor: Yup.string().required(REQUIRED_FIELD),
-  unidades: Yup.string().required(REQUIRED_FIELD),
+  nome: Yup.string().required(`${REQUIRED_FIELD} Nome`),
+  valor: Yup.number().moreThan(0, `${NO_ZERO} [Valor]`).required(`${REQUIRED_FIELD} Valor`),
+  unidades: Yup.number()
+    .moreThan(0, `${NO_ZERO} [Unidades]`)
+    .integer('[Unidades] não pode ser decimal')
+    .required(`${REQUIRED_FIELD} Unidades`),
 });
 
 const AlterarEditarProdutoForm = ({ isEdicao, initialValues, closeModal }: IProps) => {
@@ -45,8 +50,9 @@ const AlterarEditarProdutoForm = ({ isEdicao, initialValues, closeModal }: IProp
       validateOnBlur={false}
       onSubmit={isEdicao ? atualizarProduto : cadastrarProduto}
     >
-      {({ handleChange, values }) => (
+      {({ handleChange, values, errors }) => (
         <Form translate=''>
+          <StyledMensagemAlerta tipo='erro' unica formikMessages={errors} />
           <FormGroup>
             <Label>Nome do produto</Label>
             <Field
